@@ -1,0 +1,84 @@
+package com.example.hotel.entities;
+
+import java.util.Date;
+
+import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
+@Table(name = "resa", schema = "hotels", catalog = "")
+public class ReservationEntity {
+    private int id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Africa/Tunis")
+    private Date dateDebut;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Africa/Tunis")
+    private Date dateFin;
+    private int numeroChambre;
+    private ClientEntity client;
+    private HotelEntity hotel;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "datedebut")
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    @Basic
+    @Column(name = "datefin")
+    public Date getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
+
+    @Basic
+    @Column(name = "numero_chambre")
+    public int getNumeroChambre() {
+        return numeroChambre;
+    }
+
+    public void setNumeroChambre(int numeroChambre) {
+        this.numeroChambre = numeroChambre;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "client", referencedColumnName = "id")
+    public ClientEntity getClient() {
+        return client;
+    }
+
+    public void setClient(ClientEntity client) {
+        this.client = client;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "hotel", referencedColumnName = "id")
+    public HotelEntity getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(HotelEntity hotel) {
+        this.hotel = hotel;
+    }
+}
