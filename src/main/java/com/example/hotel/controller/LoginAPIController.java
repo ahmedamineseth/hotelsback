@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.hotel.entities.AdminEntity;
 import com.example.hotel.service.AdminService;
 
+import java.util.Base64;
+
 @RestController()
 @RequestMapping("/api/login")
 public class LoginAPIController {
@@ -24,11 +26,16 @@ public class LoginAPIController {
 	
 	@PostMapping(path = "", produces = "application/json")
     ResponseEntity<AdminEntity> checkLogin( @RequestBody AdminEntity userv ){
+		
+		System.out.println( passwordEcorder.encode( "m2iFinFormation" ) );  
+
 		try {
 			AdminEntity ae = as.findByUsername( userv.getUsername() );
 			
 			if( ae != null && passwordEcorder.matches( userv.getPassword() , ae.getPassword() ) ) {
-				ae.setPassword(null); 
+				String encoding = Base64.getEncoder().encodeToString((userv.getUsername()+":"+userv.getPassword()).getBytes());
+				 
+				ae.setPassword(encoding); 
 				return ResponseEntity.ok() // ok => 200 
 	                    .body(ae);	
 			}else {

@@ -31,7 +31,10 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
+        
+    	http.authorizeRequests().antMatchers("/api/login" ).permitAll();
+    	
+    	http.cors().and()
         .antMatcher("/api/**")
         .csrf()
         .disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // On utilise pas les sessions, toute req est déconnectée suite à l'exécution
